@@ -29,7 +29,7 @@ router.post('/signup', (req, res) => {
 router.post('/signin', (req, res) => {
     User.findOne({ where: { username: req.body.user.username } }).then(user => {
         if (user) {
-            bcrypt.compare(req.body.user.password, user.passwordHash, function (err, matches) {
+            bcrypt.compare(req.body.user.password, user.dataValues.passwordHash, function (err, matches) {
                 if (matches) {
                     var token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', { expiresIn: 60 * 60 * 24 });
                     res.json({
