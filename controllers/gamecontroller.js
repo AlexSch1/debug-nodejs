@@ -1,12 +1,12 @@
-var router = require('express').Router();
-var Game = require('../db').import('../models/game');
+const router = require('express').Router();
+const Game = require('../db').import('../models/game');
 
 router.get('/all', (req, res) => {
     Game.findAll({ where: { owner_id: req.user.id } })
         .then(
-            function findSuccess(data) {
+            function findSuccess(games) {
                 res.status(200).json({
-                    games: games,
+                    games,
                     message: "Data fetched."
                 })
             },
@@ -24,7 +24,7 @@ router.get('/:id', (req, res) => {
         .then(
             function findSuccess(game) {
                 res.status(200).json({
-                    game: game
+                    game
                 })
             },
 
@@ -48,7 +48,7 @@ router.post('/create', (req, res) => {
         .then(
             function createSuccess(game) {
                 res.status(200).json({
-                    game: game,
+                    game,
                     message: "Game created."
                 })
             },
@@ -70,13 +70,13 @@ router.put('/update/:id', (req, res) => {
         {
             where: {
                 id: req.params.id,
-                owner_id: req.user
+                owner_id: req.user.id
             }
         })
         .then(
             function updateSuccess(game) {
                 res.status(200).json({
-                    game: game,
+                    game,
                     message: "Successfully updated."
                 })
             },
@@ -100,7 +100,7 @@ router.delete('/remove/:id', (req, res) => {
     .then(
         function deleteSuccess(game) {
             res.status(200).json({
-                game: game,
+                game,
                 message: "Successfully deleted"
             })
         },
@@ -113,4 +113,4 @@ router.delete('/remove/:id', (req, res) => {
     )
 })
 
-module.exports = routers;
+module.exports = router;
